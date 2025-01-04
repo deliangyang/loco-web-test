@@ -8,6 +8,9 @@ use loco_rs::{
     task::Tasks,
     Result,
 };
+use migration::Migrator;
+use sea_orm::DatabaseConnection;
+use std::path::Path;
 
 use crate::controllers;
 #[allow(unused_imports)]
@@ -31,7 +34,7 @@ impl Hooks for App {
     }
 
     async fn boot(mode: StartMode, environment: &Environment) -> Result<BootResult> {
-        create_app::<Self>(mode, environment).await
+        create_app::<Self, Migrator>(mode, environment).await
     }
 
     fn routes(_ctx: &AppContext) -> AppRoutes {
@@ -40,6 +43,14 @@ impl Hooks for App {
     }
 
     async fn connect_workers(_ctx: &AppContext, _queue: &Queue) -> Result<()> {
+        Ok(())
+    }
+
+    async fn truncate(_db: &DatabaseConnection) -> Result<()> {
+        Ok(())
+    }
+
+    async fn seed(_db: &DatabaseConnection, _base: &Path) -> Result<()> {
         Ok(())
     }
 
