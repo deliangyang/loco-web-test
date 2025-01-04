@@ -15,6 +15,7 @@ pub fn routes() -> Routes {
         .prefix("/api")
         .add("/", get(current))
         .add("/post/create", post(create_post))
+        .add("/redis/test", post(redis_test))
 }
 
 async fn create_post(State(ctx): State<AppContext>) -> Result<Response> {
@@ -25,4 +26,10 @@ async fn create_post(State(ctx): State<AppContext>) -> Result<Response> {
     model.text = Set("text v1".to_string());
     let item = model.insert(&ctx.db).await?;
     format::json(item)
+}
+
+async fn redis_test(State(ctx): State<AppContext>) -> Result<Response> {
+    let _: () = ctx.cache.insert("test", "value").await?;
+    let value: Option<String> = ctx.cache.get("test").await?;
+    format::json(value)
 }

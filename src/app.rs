@@ -1,12 +1,6 @@
 use async_trait::async_trait;
 use loco_rs::{
-    app::{AppContext, Hooks},
-    bgworker::Queue,
-    boot::{create_app, BootResult, StartMode},
-    controller::AppRoutes,
-    environment::Environment,
-    task::Tasks,
-    Result,
+    app::{AppContext, Hooks}, bgworker::Queue, boot::{create_app, BootResult, StartMode}, cache, controller::AppRoutes, environment::Environment, task::Tasks, Result
 };
 use migration::Migrator;
 use sea_orm::DatabaseConnection;
@@ -57,5 +51,12 @@ impl Hooks for App {
     #[allow(unused_variables)]
     fn register_tasks(tasks: &mut Tasks) {
         // tasks.register(TASK);
+    }
+
+    async fn after_context(ctx: AppContext) -> Result<AppContext> {
+        Ok(AppContext{
+            cache: cache::Cache::new(cache::drivers::inmem::new()).into(),
+            ..ctx
+        })
     }
 }

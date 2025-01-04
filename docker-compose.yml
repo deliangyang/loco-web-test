@@ -1,0 +1,21 @@
+version: '3.8'
+
+services:
+  djangodb:
+    image: mysql:8.0.11
+    restart: always
+    container_name: djangodb
+    environment:
+      MYSQL_DATABASE: 'django'
+      MYSQL_USER: 'django'
+      MYSQL_PASSWORD: 'django'
+      MYSQL_ROOT_PASSWORD: 'django'
+    ports:
+      - "3390:3306"
+
+  djangoredis:
+    image: redis:6.0.6
+    restart: always
+    container_name: djangoredis
+    ports:
+      - "6390:6379"

@@ -37,3 +37,27 @@ database:
   dangerously_truncate: false
   # Recreating schema when application loaded.  This is a dangerous operation, make sure that you using this flag only on dev environments or test mode
   dangerously_recreate: false
+
+redis:
+  # Redis connection URI
+  uri: redis://127.0.0.1:6390
+
+queue:
+  kind: Redis
+  # Redis connection URI
+  uri: redis://127.0.0.1:6390
+  # Dangerously flush all data in Redis on startup. dangerous operation, make sure that you using this flag only on dev environments or test mode
+  dangerously_flush: false
+
+auth:
+  # JWT authentication
+  jwt:
+    # Secret key for token generation and verification
+    secret: PqRwLF2rhHe8J22oBeHy
+    # Token expiration time in seconds
+    expiration: 604800 # 7 days
+
+cache:
+  kind: Redis
+  # Redis connection URI
+  uri: redis://127.0.0.1:6390
